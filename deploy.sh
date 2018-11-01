@@ -17,7 +17,9 @@ SERVERJSONDIR=/etc/shadowsocks-libev
 SYSTEMCTL="SYSTEMD_COLORS=1 systemctl"
 PROMPT="\\033[32m[$(date)]\\033[0m" # man console_codes
 SERVERPORT='443'
-CIPHER='bf-cfb'
+# CIPHER='bf-cfb'
+# CIPHER='chacha20-ietf-poly1305'
+CIPHER='aes-256-gcm'
 PASSWD=$(pwgen -s 32 1)
 TIMEOUT='60'
 SERVERPREFIX="$2"_server
