@@ -1,65 +1,72 @@
-#!/bin/bash
+#!/dev/null
 
-source getparam.sh
+# Replace
+# [] -> []
+# [] -> []
+# [] -> []
+# [] -> []
 
-
-echo 'Installing required packages...'
+# ssh -> copy -> paste -> go
 apt update
 apt upgrade
 apt install \
+aria2 \
 shadowsocks-libev \
 tmux \
 tree \
-vim \
-
-# (shellcheck) SC2087: Quote 'EOF' to make here document expansions happen on the server side rather than on the client.
-# But we need both types of expansions thus we don't quote EOF
-ssh root@"$1" /bin/bash <<EOF
-
-echo 'Set time zone to Asia/Shanghai...'
-ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
-echo 'Gen /etc/adjtime...'
-hwclock --systohc
-
-echo '/etc/locale.gen: Uncomment {en_US,zh_CN,ja_jP}.* ...'
-sed -i '/en_US/s/^#//g' /etc/locale.gen
-sed -i '/zh_CN/s/^#//g' /etc/locale.gen
-sed -i '/ja_jP/s/^#//g' /etc/locale.gen
-
-echo 'Invoke locale-gen...'
-locale-gen
-
-echo '/etc/locale.conf: Set $LANG ...'
-echo 'LANG=en_US.UTF-8' >/etc/locale.conf
-
-echo 'Gen hostname file...'
-HOSTNAME=$2
-echo \$HOSTNAME >/etc/hostname
-
-echo '/etc/hosts: Add matching entries...'
-cat >/etc/hosts <<EOHOSTS
-127.0.0.1 localhost
-::1   localhost
-127.0.1.1 \$HOSTNAME.localdomain \$HOSTNAME
-EOHOSTS
-
-
-
-echo "Enable and start services..."
-systemctl enable lighttpd.service
-systemctl start lighttpd.service
-
-echo 'Cleanup...'
-pacman -Scc --noconfirm
-
-EOF
-
-echo -n 'Reboot?...'; read -r
-ssh root@"$1" systemctl reboot
-exit 0
+vim 
+systemctl reboot
 
 ################################################################################
+
+# # (shellcheck) SC2087: Quote 'EOF' to make here document expansions happen on the server side rather than on the client.
+# # But we need both types of expansions thus we don't quote EOF
+# ssh root@"$1" /bin/bash <<EOF
+
+# echo 'Set time zone to Asia/Shanghai...'
+# ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# echo 'Gen /etc/adjtime...'
+# hwclock --systohc
+
+# echo '/etc/locale.gen: Uncomment {en_US,zh_CN,ja_jP}.* ...'
+# sed -i '/en_US/s/^#//g' /etc/locale.gen
+# sed -i '/zh_CN/s/^#//g' /etc/locale.gen
+# sed -i '/ja_jP/s/^#//g' /etc/locale.gen
+
+# echo 'Invoke locale-gen...'
+# locale-gen
+
+# echo '/etc/locale.conf: Set $LANG ...'
+# echo 'LANG=en_US.UTF-8' >/etc/locale.conf
+
+# echo 'Gen hostname file...'
+# HOSTNAME=$2
+# echo \$HOSTNAME >/etc/hostname
+
+# echo '/etc/hosts: Add matching entries...'
+# cat >/etc/hosts <<EOHOSTS
+# 127.0.0.1 localhost
+# ::1   localhost
+# 127.0.1.1 \$HOSTNAME.localdomain \$HOSTNAME
+# EOHOSTS
+
+
+
+# echo "Enable and start services..."
+# systemctl enable lighttpd.service
+# systemctl start lighttpd.service
+
+# echo 'Cleanup...'
+# pacman -Scc --noconfirm
+
+# EOF
+
+# echo -n 'Reboot?...'; read -r
+# ssh root@"$1" systemctl reboot
+# exit 0
+
+
 
 # [22:42:48] Starting 'vscode-linux-x64-min'...
 # [22:43:41] Downloading extension: ms-vscode.node-debug2@1.25.6 ...

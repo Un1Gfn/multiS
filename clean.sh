@@ -1,3 +1,3 @@
 #!/bin/bash
-rm -i ./*.json
-rm -i ./*.png
+rm -fv ./*.json
+rm -fv ./*.png
